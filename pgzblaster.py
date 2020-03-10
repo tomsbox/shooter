@@ -1,7 +1,7 @@
 import random, time, sys
 import pygame, pgzrun
 
-WIDTH, HEIGHT = 500, 700
+WIDTH, HEIGHT = 1000, 700
 RED = 200, 0, 0
 BOX = Rect((20, 20), (100, 100))
 class Player():
@@ -84,7 +84,6 @@ class Ship(Actor):
     def hit(self):
         counter.print_result()
         sounds.ship_hit.play()
-        counter.ship_hit_counter()
         if counter.get_ship_hit_counter() > 2:
             if int(counter.get_points()) > int(counter.get_highscore()[1]):
                 file = open("maxpoints.txt","w")
@@ -94,10 +93,9 @@ class Ship(Actor):
                 file.write("\n")
 
             time.sleep(3)
-
             sys.exit()
         else:
-            pass
+            counter.ship_hit_counter()
 
 
 
@@ -212,18 +210,19 @@ def update():
 def draw():
     screen.fill((255, 255, 255))
     #screen.draw.rect(BOX, RED)
-    points = myfont.render('Points: ' + str(counter.get_points()), False, (0, 0, 0))
+    points = myfont.render('Points: ' + str(counter.get_points()) + ' (' + player.get_name() + ')', False, (0, 0, 0))
     screen.blit(points,(0,0))
 
-    highscore = myfont.render('Highscore: ' + str(counter.get_highscore()[1]) + '(' + counter.get_highscore()[0] + ')', False, (0, 0, 0))
-    screen.blit(highscore,(0,25))
+    highscore = myfont.render('Highscore: ' + str(counter.get_highscore()[1]) + ' (' + counter.get_highscore()[0] + ')', False, (0, 0, 0))
+    screen.blit(highscore,(0,35))
 
     for actor in game.rockets + game.bombs + game.ufos:
         actor.draw()
     game.ship.draw()
 
 player=Player()
-#player.enter_name()
+player.enter_name()
+
 counter=Counter()
 game = Game()
 
@@ -231,8 +230,7 @@ pygame.font.init() # you have to call this at the start,
                    # if you want to use this module.
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
 
-
-
 pygame.mixer.quit()
 pygame.mixer.init(44100, -16, 2, 1024)
+time.sleep(3)
 pgzrun.go()
