@@ -17,22 +17,46 @@ class Player():
 
 class Counter():
     def __init__(self):
+        print("init")
         self.shoot_counter = 0
         self.hit_counter = 0
+        self.points = 0
+        self.ship_hit = 0
+        self.fobj = open("maxpoints.txt", "r")
+        self.highscore=[]
+        for self.line in self.fobj:
+            self.highscore.append(self.line.rstrip())
+        self.fobj.close()
 
     def set_hit_counter(self):
         self.hit_counter += 1
-        print("Hit: " + str(self.hit_counter) + " ufo's!")
+        self.points += 10
+        print("Hit: " + str(self.hit_counter) + " ufo's! Your current points are: " + str(self.points))
 
     def rocket_counter(self):
         self.shoot_counter += 1
-        print("Shoot: " + str(self.shoot_counter) + " rockets!")
+        self.points -= 1
+        print("Shoot: " + str(self.shoot_counter) + " rockets! Your current points are: " + str(self.points))
+
+    def ship_hit_counter(self):
+        self.ship_hit += 1
+        self.points -= 100
+        print("You was hit for: " + str(self.ship_hit) + " times! Your current points are: " + str(self.points))
+
+    def get_ship_hit_counter(self):
+        return self.ship_hit
+
+    def get_points(self):
+        return self.points
+
+    def get_highscore(self):
+        return self.highscore
 
     def print_result(self):
         file = open("highscore.txt","a")
-        file.write(player.get_name() + " you need: " + str(self.shoot_counter) + " shots to terminate " + str(self.hit_counter) + " ufo's!")
+        file.write(player.get_name() + " you need: " + str(self.shoot_counter) + " shots to terminate " + str(self.hit_counter) + " ufo's! You get " + str(self.points)  + " points!")
         file.write("\n")
-        print(player.get_name() + " you need: " + str(self.shoot_counter) + " shots to terminate " + str(self.hit_counter) + " ufo's!")
+        print(player.get_name() + " you need: " + str(self.shoot_counter) + " shots to terminate " + str(self.hit_counter) + " ufo's! You get " + str(self.points)  + " points!")
 
 class Ship(Actor):
     def __init__(self):
@@ -60,8 +84,21 @@ class Ship(Actor):
     def hit(self):
         counter.print_result()
         sounds.ship_hit.play()
-        time.sleep(3)
-        sys.exit()
+        counter.ship_hit_counter()
+        if counter.get_ship_hit_counter() > 2:
+            if int(counter.get_points()) > int(counter.get_highscore()[1]):
+                file = open("maxpoints.txt","w")
+                file.write(player.get_name())
+                file.write("\n")
+                file.write(str(counter.get_points()))
+                file.write("\n")
+
+            time.sleep(3)
+
+            sys.exit()
+        else:
+            pass
+
 
 
 class Rocket(Actor):
@@ -111,6 +148,7 @@ class UFO(Actor):
 
         if self.colliderect(game.ship):
             game.ship.hit()
+            self.alive = False
 
     def drop_bomb(self):
         game.bombs.append(Bomb(self.center))
@@ -134,16 +172,15 @@ class Bomb(Actor):
             self.alive = False
         if self.colliderect(game.ship):
             game.ship.hit()
-
+            self.alive = False
 
 class Game:
     def __init__(self):
-
         self.ship = Ship()
         self.rockets = []
         self.ufos = []
         self.bombs = []
-        self.counter = Counter()
+
 
 
 def make_ufo_squadron(n_ufos):
@@ -174,7 +211,12 @@ def update():
 
 def draw():
     screen.fill((255, 255, 255))
-    screen.draw.rect(BOX, RED)
+    #screen.draw.rect(BOX, RED)
+    points = myfont.render('Points: ' + str(counter.get_points()), False, (0, 0, 0))
+    screen.blit(points,(0,0))
+
+    highscore = myfont.render('Highscore: ' + str(counter.get_highscore()[1]) + '(' + counter.get_highscore()[0] + ')', False, (0, 0, 0))
+    screen.blit(highscore,(0,25))
 
     for actor in game.rockets + game.bombs + game.ufos:
         actor.draw()
@@ -184,6 +226,12 @@ player=Player()
 #player.enter_name()
 counter=Counter()
 game = Game()
+
+pygame.font.init() # you have to call this at the start, 
+                   # if you want to use this module.
+myfont = pygame.font.SysFont('Comic Sans MS', 30)
+
+
 
 pygame.mixer.quit()
 pygame.mixer.init(44100, -16, 2, 1024)
