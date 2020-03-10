@@ -2,7 +2,18 @@ import random, time, sys
 import pygame, pgzrun
 
 WIDTH, HEIGHT = 500, 700
+RED = 200, 0, 0
+BOX = Rect((20, 20), (100, 100))
+class Player():
+    def __init__(self):
+        self.name = 'Matteo'
 
+    def enter_name(self):
+        self.name = input("Name:")
+        return 0
+
+    def get_name(self):
+        return self.name 
 
 class Counter():
     def __init__(self):
@@ -18,10 +29,10 @@ class Counter():
         print("Shoot: " + str(self.shoot_counter) + " rockets!")
 
     def print_result(self):
-        file = open("highscore.txt","w")
-        file.write("You need: " + str(self.shoot_counter) + " shots to terminate " + str(self.hit_counter) + " ufo's!")
+        file = open("highscore.txt","a")
+        file.write(player.get_name() + " you need: " + str(self.shoot_counter) + " shots to terminate " + str(self.hit_counter) + " ufo's!")
         file.write("\n")
-        print("You need: " + str(self.shoot_counter) + " shots to terminate " + str(self.hit_counter) + " ufo's!")
+        print(player.get_name() + " you need: " + str(self.shoot_counter) + " shots to terminate " + str(self.hit_counter) + " ufo's!")
 
 class Ship(Actor):
     def __init__(self):
@@ -127,6 +138,7 @@ class Bomb(Actor):
 
 class Game:
     def __init__(self):
+
         self.ship = Ship()
         self.rockets = []
         self.ufos = []
@@ -162,13 +174,17 @@ def update():
 
 def draw():
     screen.fill((255, 255, 255))
+    screen.draw.rect(BOX, RED)
 
     for actor in game.rockets + game.bombs + game.ufos:
         actor.draw()
     game.ship.draw()
 
+player=Player()
+#player.enter_name()
 counter=Counter()
 game = Game()
+
 pygame.mixer.quit()
 pygame.mixer.init(44100, -16, 2, 1024)
 pgzrun.go()
