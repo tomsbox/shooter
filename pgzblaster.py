@@ -220,16 +220,15 @@ def draw():
         actor.draw()
     game.ship.draw()
 
+
 player=Player()
 player.enter_name()
 
 counter=Counter()
 game = Game()
-
 pygame.font.init() # you have to call this at the start, 
                    # if you want to use this module.
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
-
 pygame.mixer.quit()
 pygame.mixer.init(44100, -16, 2, 1024)
 time.sleep(3)
