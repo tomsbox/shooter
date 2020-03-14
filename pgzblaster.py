@@ -1,5 +1,6 @@
 import random, time, sys
 import pygame, pgzrun
+from sys import argv
 
 WIDTH, HEIGHT = 1000, 700
 RED = 200, 0, 0
@@ -13,7 +14,11 @@ class Player():
         return 0
 
     def get_name(self):
-        return self.name 
+        return self.name
+        
+    def set_name(self, name):
+        self.name = name
+        
 
 class Counter():
     def __init__(self):
@@ -221,8 +226,11 @@ def draw():
     game.ship.draw()
 
 
+name = argv[1]
+print('Name' + name) 
+
 player=Player()
-player.enter_name()
+player.set_name(name)
 
 counter=Counter()
 game = Game()
@@ -231,5 +239,5 @@ pygame.font.init() # you have to call this at the start,
 myfont = pygame.font.SysFont('Comic Sans MS', 30)
 pygame.mixer.quit()
 pygame.mixer.init(44100, -16, 2, 1024)
-time.sleep(3)
+time.sleep(1)
 pgzrun.go()
