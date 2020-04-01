@@ -1,6 +1,8 @@
 import random, time, sys
 import pygame, pgzrun
 from sys import argv
+from datetime import datetime
+
 
 WIDTH, HEIGHT = 1000, 700
 RED = 200, 0, 0
@@ -19,6 +21,20 @@ class Player():
     def set_name(self, name):
         self.name = name
         
+
+class Timer():
+
+    def __init__(self):
+        self.timer = 3
+        self.last_hit= datetime.now()
+
+    def get_last_hit_in_seconds(self):
+        last_hit_in_seconds=(datetime.now() - self.last_hit).seconds
+        print(last_hit_in_seconds)
+        return last_hit_in_seconds
+
+    def set_hit_time(self):
+        self.last_hit= datetime.now()
 
 class Counter():
     def __init__(self):
@@ -173,8 +189,15 @@ class Bomb(Actor):
         self.y += self.vel
         if self.top > HEIGHT:
             self.alive = False
+
         if self.colliderect(game.ship):
-            game.ship.hit()
+
+            if timer.get_last_hit_in_seconds()>3:
+                game.ship.hit()
+                timer.set_hit_time()
+            else:
+                pass
+
             self.alive = False
 
 class Game:
@@ -221,6 +244,9 @@ def draw():
     highscore = myfont.render('Highscore: ' + str(counter.get_highscore()[1]) + ' (' + counter.get_highscore()[0] + ')', False, (0, 0, 0))
     screen.blit(highscore,(0,35))
 
+    leben = myfont.render('Leben: ' + str(3-counter.get_ship_hit_counter()), False, (0, 0, 0))
+    screen.blit(leben,(0,70))
+
     for actor in game.rockets + game.bombs + game.ufos:
         actor.draw()
     game.ship.draw()
@@ -231,6 +257,8 @@ print('Name' + name)
 
 player=Player()
 player.set_name(name)
+
+timer=Timer()
 
 counter=Counter()
 game = Game()
