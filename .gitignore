@@ -1,2 +1,11 @@
 venv
 highscore.txt
+.vscode
+.idea/codeStyles/codeStyleConfig.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/shooter.iml
+.idea/vcs.xml
+highscore.txt
