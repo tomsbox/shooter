@@ -53,7 +53,7 @@ class Counter():
         self.second = {"player": 'none', "score": 0}
         self.third = {"player": 'none', "score": 0}
         self.highscore = []
-        self.backend_api_url = 'http://192.168.178.64:8000/games/'
+        self.backend_api_url = 'http://192.168.178.38:8000/games/'
         self.highscore_backendjson = self.get_highscore_from_backend()
         for self.line in self.fobj:
             self.highscore.append(self.line.rstrip())
