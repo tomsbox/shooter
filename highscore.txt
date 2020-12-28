@@ -175,3 +175,11 @@ Thomas you need: 48 shots to terminate 25 ufo's! You get 202 points!
 Thomas you need: 48 shots to terminate 25 ufo's! You get 102 points!
 Thomas you need: 48 shots to terminate 25 ufo's! You get 2 points!
 Thomas you need: 48 shots to terminate 25 ufo's! You get -98 points!
+Thomas you need: 27 shots to terminate 10 ufo's! You get 73 points!
+Thomas you need: 315 shots to terminate 152 ufo's! You get 1105 points!
+Thomas you need: 315 shots to terminate 152 ufo's! You get 1005 points!
+Thomas you need: 315 shots to terminate 152 ufo's! You get 905 points!
+Test you need: 3 shots to terminate 2 ufo's! You get 17 points!
+Test you need: 3 shots to terminate 2 ufo's! You get -83 points!
+Test you need: 3 shots to terminate 2 ufo's! You get -183 points!
+Test you need: 3 shots to terminate 2 ufo's! You get -283 points!
